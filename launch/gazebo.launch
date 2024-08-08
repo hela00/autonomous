@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Load URDF -->
+    <param name="robot_description" command="xacro '$(find urdf_robot)/urdf/rover_urdf.xacro'"/>
+ <arg name="world" default="empty"/> 
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <arg name="x" default="-4"/>
+  <arg name="y" default="1"/>
+  <arg name="z" default="0.2"/>
+  
+    
+
+    <!-- Start Gazebo with specified world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find urdf_robot)/worlds/test.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- Spawn the robot model in Gazebo -->
+    <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+   args="-urdf -param robot_description -model urdf_robot
+   -x $(arg x) -y $(arg y) -z $(arg z)" />
+
+
+    
+
+
+    
+    <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+        <param name="output_frame" value="odom"/>
+        <param name="base_footprint_frame" value="base_footprint"/>
+        <param name="freq" value="50.0"/>
+        <param name="sensor_timeout" value="1.0"/>
+        <param name="odom_used" value="true"/>
+        <param name="imu_used" value="true"/>
+        <param name="vo_used" value="false"/>
+        <param name="gps_used" value="false"/>
+        <param name="debug" value="false"/>
+        <param name="self_diagnose" value="false"/>
+    </node>
+
+   
+
+ 
+    <!--node pkg="tf" type="static_transform_publisher" name="base_link_odom" args="0 0 0 1.571 0 0 /map /base_link 100"/-->
+
+
+</launch>
