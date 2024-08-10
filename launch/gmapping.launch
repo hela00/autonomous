@@ -4,23 +4,24 @@
   <arg name="odom_frame"  default="odom"/>
   
   <param name="robot_description" command="xacro '$(find urdf_robot)/urdf/rover_urdf.xacro'"/>
-  <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 world map 50"/>
+ <!-- <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 world map 50"/>
   <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom 50"/>
-  <node pkg="tf" type="static_transform_publisher" name="odom_to_base_footprint" args="0 0 0 0 0 0 odom base_footprint 50"/>
-  <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0.05 0 0 0 base_footprint base_link 50" />
+ <node pkg="tf" type="static_transform_publisher" name="odom_to_base_footprint" args="0 0 0 0 0 0 odom base_footprint 50"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0 0 0 0 base_footprint base_link 50" />-->
 
- <arg name="rviz_config_file" default="$(find urdf_robot)/config/robot.rviz"/>
-    
-  <param name="use_sim_time" value="true"/>
+ <!--<arg name="rviz_config_file" default="$(find urdf_robot)/config/robot.rviz"/>-->
+    <node pkg="rviz" type="rviz" name="rviz" required="true"/>
+  
 <param name="use_sim_time" value="true"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
     <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config_file)"/>
+    <!--<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config_file)"/>-->
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <remap from="scan" to="/scan"/>
+    <param name="base_frame" value="base_footprint"/>
     <param  name="odom_frame" value="odom" />
-    <param name="map_update_interval" value="5.0"/>
+    <param name="map_update_interval" value="2.5"/>
     <param name="maxUrange" value="16.0"/>
     <param name="sigma" value="0.05"/>
     <param name="kernelSize" value="1"/>
@@ -38,11 +39,11 @@
     <param name="angularUpdate" value="0.5"/>
     <param name="temporalUpdate" value="3.0"/>
     <param name="resampleThreshold" value="0.5"/>
-    <param name="particles" value="30"/>
-    <param name="xmin" value="-50.0"/>
-    <param name="ymin" value="-50.0"/>
-    <param name="xmax" value="50.0"/>
-    <param name="ymax" value="50.0"/>
+    <param name="particles" value="50"/>
+    <param name="xmin" value="-100.0"/>
+    <param name="ymin" value="-100.0"/>
+    <param name="xmax" value="100.0"/>
+    <param name="ymax" value="100.0"/>
     <param name="delta" value="0.05"/>
     <param name="llsamplerange" value="0.01"/>
     <param name="llsamplestep" value="0.01"/>
@@ -53,6 +54,6 @@
  
   <!-- Launch a node for controlling the robot -->
   <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen">
-    <remap from="cmd_vel" to="/cmd_vel"/>
+    <remap from="cmd_vel" to="cmd_vel"/>
   </node>
 </launch>

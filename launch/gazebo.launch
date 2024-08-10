@@ -10,15 +10,15 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
 
-  <arg name="x" default="-4"/>
-  <arg name="y" default="1"/>
-  <arg name="z" default="0.2"/>
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0"/>
   
     
 
     <!-- Start Gazebo with specified world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find urdf_robot)/worlds/test.world"/>
+        <arg name="world_name" value="$(find urdf_robot)/worlds/world.world"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
@@ -36,7 +36,7 @@
     
 
 
-    
+    <!--
     <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
         <param name="output_frame" value="odom"/>
         <param name="base_footprint_frame" value="base_footprint"/>
@@ -48,7 +48,7 @@
         <param name="gps_used" value="false"/>
         <param name="debug" value="false"/>
         <param name="self_diagnose" value="false"/>
-    </node>
+    </node>-->
 
    
 

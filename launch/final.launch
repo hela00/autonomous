@@ -1,25 +1,33 @@
 <launch>
+  <param name="use_sim_time" value="true" />
   <!-- Transformation Configuration -->
-  <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 world map 50"/>
-  <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom 50"/>
-  <node pkg="tf" type="static_transform_publisher" name="odom_to_base_footprint" args="0 0 0 0 0 0 odom base_footprint 50"/>
-  <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0.05 0 0 0 base_footprint base_link 50" />
+  <!--<node
+  pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 world map 50"/>
+  <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom
+  50"/>
+  <node pkg="tf" type="static_transform_publisher" name="odom_to_base_footprint" args="0 0 0 0 0 0
+  odom base_footprint 50"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0.05 0 0 0
+  base_footprint base_link 50" />-->
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui"
+    type="joint_state_publisher_gui" />
 
   <!-- Start Gazebo with specified world -->
-  <include file="$(find urdf_robot)/launch/gazebo.launch"/>
+  <include file="$(find urdf_robot)/launch/gazebo.launch" />
 
   <!-- Start gmapping for SLAM -->
-  <include file="$(find urdf_robot)/launch/gmapping.launch"/>
+  <!-- <include file="$(find urdf_robot)/launch/gmapping.launch"/>-->
 
-  <node pkg="rviz" type="rviz" name="rviz" required="true"/>
+  <arg name="open_rviz" default="true" />
+  <group if="$(arg open_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+      args="-d $(find urdf_robot)/config/nav.rviz" />
+  </group>
 
   <!-- Start AMCL -->
-  <!--include file="$(find urdf_robot)/launch/amcl.launch"/-->
-
-  <!-- Start move_base -->
-  
-
- 
+  <include file="$(find urdf_robot)/launch/amcl.launch" />
 
 
 </launch>

@@ -264,75 +264,34 @@
 
   <link name="camera_link_optical"></link>
 
- 
-
-  
-  
-  
- 
-  <gazebo reference="camera_link">
+    <gazebo reference="camera_link">
     <material>Gazebo/Black</material>
   </gazebo>
   
 
   <gazebo>
-    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
-
-    <!-- Plugin update rate in Hz -->
-      <updateRate>10</updateRate>
-
-    <!-- Name of left joint, defaults to `left_joint` -->
-      <leftJoint>left_front_wheel_jointl</leftJoint>
-
-    <!-- Name of right joint, defaults to `right_joint` -->
-      <rightJoint>right_front_wheel_joint</rightJoint>
-
-      
-
-    <!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
-      <wheelSeparation>0.43</wheelSeparation>
-
-    <!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
-      <wheelDiameter>0.14</wheelDiameter>
-
-    <!-- Wheel acceleration, in rad/s^2, defaults to 0.0 rad/s^2 -->
-      <wheelAcceleration>1.0</wheelAcceleration>
-
-    <!-- Maximum torque which the wheels can produce, in Nm, defaults to 5 Nm -->
-      <wheelTorque>28</wheelTorque>
-
-    <!-- Topic to receive geometry_msgs/Twist message commands, defaults to `cmd_vel` -->
-      <commandTopic>cmd_vel</commandTopic>
-
-    <!-- Topic to publish nav_msgs/Odometry messages, defaults to `odom` -->
-      <odometryTopic>odom</odometryTopic>
-
-    <!-- Odometry frame, defaults to `odom` -->
-      <odometryFrame>odom</odometryFrame>
-
-    <!-- Robot frame to calculate odometry from, defaults to `base_footprint` -->
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>10.0</updateRate>
+      <robotNamespace>/</robotNamespace>
+      <leftFrontJoint>left_front_wheel_joint</leftFrontJoint>
+      <rightFrontJoint>right_front_wheel_joint</rightFrontJoint>
+      <leftRearJoint>left_rear_wheel_joint</leftRearJoint>
+      <rightRearJoint>right_rear_wheel_joint</rightRearJoint>
+      <wheelSeparation>0.37</wheelSeparation>
+      <wheelDiameter>0.134</wheelDiameter>
       <robotBaseFrame>base_footprint</robotBaseFrame>
-
-    
-    <!-- Set to true to publish transforms for the wheel links, defaults to false -->
-      <publishWheelTF>true</publishWheelTF>
-
-    <!-- Set to true to publish transforms for the odometry, defaults to true -->
-      <publishOdom>true</publishOdom>
-
-    <!-- Set to true to publish sensor_msgs/JointState on /joint_states for the wheel joints, defaults to false -->
-      <publishWheelJointState>true</publishWheelJointState>
-
-    <!-- Set to true to swap right and left wheels, defaults to true -->
-      <legacyMode>false</legacyMode>
-
-      <publishOdomTF>true</publishOdomTF>
-      <odometrySource>world</odometrySource>
-      <updateRate>100.0</updateRate>
-      <rosDebugLevel>info</rosDebugLevel>
-      <publishTf>1</publishTf>
+      <torque>25</torque>
+      <topicName>cmd_vel</topicName>
+      <broadcastTF>true</broadcastTF>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <commandTopic>cmd_vel</commandTopic>
+      <covariance_x>0.001000</covariance_x>
+      <covariance_y>0.001000</covariance_y>
+      <covariance_yaw>0.100000</covariance_yaw>
     </plugin>
   </gazebo>
+
 
   <gazebo reference="laser_frame">
     <sensor type="gpu_ray" name="head_hokuyo_sensor">
@@ -423,4 +382,3 @@
   
   
   
-
