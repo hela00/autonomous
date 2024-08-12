@@ -1,19 +1,9 @@
-global_costmap:
-  global_frame: map
-  robot_base_frame: base_footprint
-  update_frequency: 20.0
-  publish_frequency: 20.0
-  
-  resolution: 0.01
+global_frame: map
+robot_base_frame: base_footprint
+rolling_window: false
+track_unknown_space: true
 
- #We'll use a map served by the map_server to initialize this costmap
-  static_map: true
-  rolling_window: false 
-  transform_tolerance: 0.5
-  
-  plugins:
-     - {name: static_layer,            type: "costmap_2d::StaticLayer"} #static map
-
-     - {name: laser_layer,             type: "costmap_2d::ObstacleLayer"} #laser use on walls and objects
-
-     - {name: inflation_layer,         type: "costmap_2d::InflationLayer"} #inflation layer
+plugins:
+  - {name: static,                  type: "costmap_2d::StaticLayer"}
+  - {name: obstacles_laser,         type: "costmap_2d::VoxelLayer"}
+  - {name: inflation,               type: "costmap_2d::InflationLayer"}
