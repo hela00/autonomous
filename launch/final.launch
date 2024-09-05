@@ -8,28 +8,25 @@
 
   <!-- Start Gazebo with specified world -->
   <include file="$(find urdf_robot)/launch/gazebo.launch" />
+  
+   
+    <node pkg="controller_manager" type="spawner" name="skid_steer_controller_spawner" args="skid_steer_drive_controller" />
 
+    <!-- Start Joint State Controller -->
+    <node pkg="controller_manager" type="spawner" name="joint_state_controller_spawner" args="joint_state_controller" />
   
-    <!-- Depth image topic from Gazebo -->
-    <arg name="depth_image" default="/image_raw" />
-  
-    <!-- Point cloud topic -->
-    <arg name="point_cloud" default="/camera/depth/points" />
-  
-    <!-- Start depth_image_proc node -->
-    <node pkg="depth_image_proc" type="point_cloud_xyz" name="depth_to_pointcloud">
-      <remap from="image" to="$(arg depth_image)" />
-      <remap from="points" to="$(arg point_cloud)" />
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" output="screen">
+      <param name="use_sim_time" value="true"/>
+      <param name="config" value="$(find urdf_robot)/param/ekf.yaml"/>
     </node>
   
-  
-
+    
   <!-- Start AMCL -->
   <include file="$(find urdf_robot)/launch/amcl.launch" />
+ 
 
-  <!-- Start EKF Localization -->
-  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" output="screen">
-    <param name="config" value="$(find urdf_robot)/config/ekf.yaml" />
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" output="screen">
+    <param name="config" value="$(find urdf_robot)/param/ekf.yaml"/>
   </node>
 
   <arg name="open_rviz" default="true" />
@@ -37,5 +34,8 @@
     <node pkg="rviz" type="rviz" name="rviz" required="true"
       args="-d $(find urdf_robot)/config/nav.rviz" />
   </group>
+
+  <include file="$(find route_admin_panel)/launch/panel.launch" />
+  <include file="$(find object_detection)/launch/object_detection.launch" />
 
 </launch>

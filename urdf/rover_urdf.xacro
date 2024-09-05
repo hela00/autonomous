@@ -2,6 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="urdf_robot">
   
   <xacro:macro name="inertial_sphere" params="mass radius *origin">
+
+
     <inertial>
       <xacro:insert_block name="origin"/>
       <mass value="${mass}" />
@@ -334,7 +336,7 @@
       <cameraName>camera</cameraName>
       <update_rate>10</update_rate>
       <camera>
-      <image width="640" height="480" hfov="1.5708" format="RGB8" near="0.01" far="50.0"/>
+      <image width="640" height="480" hfov="1.5708" format="RGB8" near="0.01" far="50.0" fps="30.0"/>
       </camera>
       <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
         <!--topicName>/scan</topicName-->

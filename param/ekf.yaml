@@ -1,28 +1,26 @@
-ekf_localization_node:
-  frequency: 30
-  sensor_timeout: 0.1
-  two_d_mode: true
+frequency: 50
+sensor_timeout: 0.1
 
- 
-  # LiDAR input
-  laser0: /scan
-  laser0_config: [false, false, false,
-                  false, false, false,
-                  true,  true,  false,
-                  false, false, false,
-                  false, false, false]
+odom0: /odom
+odom0_config: [true, true, false,  # Use X and Y positions
+               false, false, false, # Ignore Z position
+               true,  true,  false, # Use linear velocities X and Y
+               false, false, false, # Ignore Z velocity
+               false, false, false] # Ignore roll, pitch, and yaw
+odom0_differential: false
+odom0_queue_size: 10
 
-  # Point Cloud input
-  point_cloud0: /camera/depth/points
-  point_cloud0_config: [false, false, false,
-                        false, false, false,
-                        true,  true,  true,
-                        false, false, false,
-                        false, false, false]
+imu0: /imu_data
+imu0_config: [false, false, false, # Ignore position
+              true,  true,  true,  # Use orientation (roll, pitch, yaw)
+              true,  true,  true,  # Use angular velocities
+              false, false, true]  # Use linear acceleration Z only
+imu0_differential: false
+imu0_queue_size: 10
+imu0_remove_gravitational_acceleration: true
 
-  # Output configuration
-  publish_tf: true
-  map_frame: map
-  odom_frame: odom
-  base_link_frame: base_link
-  world_frame: odom
+publish_tf: true
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom

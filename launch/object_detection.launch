@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="object_detection" type="your_script.py" name="object_detection_node" output="screen"/>
+</launch>
