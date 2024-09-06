@@ -1,0 +1,2 @@
+
+-G Unix Makefiles -DCATKIN_DEVEL_PREFIX=/home/ubuntu/ros_catkin_ws/src/urdf_robot/devel_isolated -DCMAKE_INSTALL_PREFIX=/home/ubuntu/ros_catkin_ws/src/urdf_robot/install_isolated

@@ -1,0 +1,41 @@
+<launch>
+  <param name="use_sim_time" value="true" />
+  
+  <!-- Transformation Configuration -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui"
+    type="joint_state_publisher_gui" />
+
+  <!-- Start Gazebo with specified world -->
+  <include file="$(find urdf_robot)/launch/gazebo.launch" />
+
+  
+    <!-- Depth image topic from Gazebo -->
+    <arg name="depth_image" default="/image_raw" />
+  
+    <!-- Point cloud topic -->
+    <arg name="point_cloud" default="/camera/depth/points" />
+  
+    <!-- Start depth_image_proc node -->
+    <node pkg="depth_image_proc" type="point_cloud_xyz" name="depth_to_pointcloud">
+      <remap from="image" to="$(arg depth_image)" />
+      <remap from="points" to="$(arg point_cloud)" />
+    </node>
+  
+  
+
+  <!-- Start AMCL -->
+  <include file="$(find urdf_robot)/launch/amcl.launch" />
+
+  <!-- Start EKF Localization -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" output="screen">
+    <param name="config" value="$(find urdf_robot)/config/ekf.yaml" />
+  </node>
+
+  <arg name="open_rviz" default="true" />
+  <group if="$(arg open_rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+      args="-d $(find urdf_robot)/config/nav.rviz" />
+  </group>
+
+</launch>
